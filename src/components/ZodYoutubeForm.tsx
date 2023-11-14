@@ -4,25 +4,33 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import React from "react";
 
+let countForm = 0;
+
 type TFormValues = z.infer<typeof schema>;
 
+const getTarifa = 12;
+
 const schema = z.object({
-  username: z.string().min(1, "Username is required"),
+  username: z.string().min(3, "O campo é obrigatório"),
   email: z
     .string()
-    .min(1, "Email is required")
-    .email("Email format is not valid"),
-  channel: z.string().min(1, "Channel is required"),
+    .min(1, "O campo é obrigatório")
+    .email("Formato de email inválido"),
+  channel: z.string().min(1, "O campo é obrigatório"),
+  tarifa: z
+    .number({ invalid_type_error: " O campo é obrigatório" })
+    .max(getTarifa, { message: `Valor maximo é R$ ${getTarifa}` })
+    .min(1, { message: `Valor minimo é R$ 1` }),
   country: z
     .string()
     .refine((value) => value !== "", {
-      message: "Country is required",
+      message: "Selecione um País",
     })
     .refine((value) => value !== "brazil", {
-      message: "Please select other country",
+      message: "Por favor selecione outro País",
     }),
   statusActive: z.boolean().refine((value) => value === true, {
-    message: "",
+    message: "Aceite o termo",
   }),
 });
 
@@ -30,15 +38,16 @@ const defaultFormValues: TFormValues = {
   username: "",
   email: "",
   channel: "",
+  tarifa: 1,
   country: "",
   statusActive: false,
 };
 
 export const ZodYoutubeForm = () => {
-  const [data, setData] = React.useState('');
+  const [data, setData] = React.useState("");
   const form = useForm<TFormValues>({
     defaultValues: defaultFormValues,
-    mode: "onSubmit", // modo de validação padrão, existe onChange, onBlur e etc...
+    mode: "onBlur", // modo de validação padrão, existe onChange, onBlur e etc...
     resolver: zodResolver(schema),
   });
   const {
@@ -46,6 +55,7 @@ export const ZodYoutubeForm = () => {
     control,
     handleSubmit,
     reset,
+    // setError,
     formState: { errors, isSubmitSuccessful },
   } = form;
 
@@ -61,12 +71,22 @@ export const ZodYoutubeForm = () => {
     }
   }, [isSubmitSuccessful, reset]);
 
-  // countForm++;
+  // React.useEffect(() => {
+  //   setError("username", {
+  //     message: "O campo é obrigatório",
+  //   });
+
+  //   setError("email", {
+  //     message: "O campo é obrigatório",
+  //   });
+  // }, [setError]);
+
+  countForm++;
 
   return (
     <div>
-      <h1>Zod Youtube Form</h1>
-      <form onSubmit={handleSubmit(onSubmit)} noValidate>
+      <h1>Zod Youtube Form({countForm})</h1>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="form-control">
           <label htmlFor="username">Username</label>
           <input type="text" id="username" {...register("username")} />
@@ -83,6 +103,18 @@ export const ZodYoutubeForm = () => {
           <label htmlFor="channel">Channel</label>
           <input type="text" id="channel" {...register("channel")} />
           <p className="error">{errors.channel?.message}</p>
+        </div>
+
+        <div className="form-control">
+          <label htmlFor="channel">Tarifa</label>
+          <input
+            type="number"
+            id="tarifa"
+            {...register("tarifa", {
+              valueAsNumber: true,
+            })}
+          />
+          <p className="error">{errors.tarifa?.message}</p>
         </div>
 
         <div className="form-control">
