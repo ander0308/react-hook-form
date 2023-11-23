@@ -10,35 +10,55 @@ type TFormValues = z.infer<typeof schema>;
 
 const getTarifa = 12;
 
-const schema = z.object({
-  username: z.string().min(3, "O campo é obrigatório"),
-  email: z
-    .string()
-    .min(1, "O campo é obrigatório")
-    .email("Formato de email inválido"),
-  channel: z.string().min(1, "O campo é obrigatório"),
-  tarifa: z
-    .number({ invalid_type_error: " O campo é obrigatório" })
-    .max(getTarifa, { message: `Valor maximo é R$ ${getTarifa}` })
-    .min(1, { message: `Valor minimo é R$ 1` }),
-  country: z
-    .string()
-    .refine((value) => value !== "", {
-      message: "Selecione um País",
-    })
-    .refine((value) => value !== "brazil", {
-      message: "Por favor selecione outro País",
+const schema = z
+  .object({
+    username: z.string().min(3, "O campo é obrigatório"),
+    email: z
+      .string()
+      .min(1, "O campo é obrigatório")
+      .email("Formato de email inválido"),
+    channel: z.string().min(1, "O campo é obrigatório"),
+    tarifa: z
+      .number({ invalid_type_error: " O campo é obrigatório" })
+      .max(getTarifa, { message: `Valor maximo é R$ ${getTarifa}` })
+      .min(1, { message: `Valor minimo é R$ 1` }),
+    tarifaDiaria: z
+      .number({ invalid_type_error: " O campo é obrigatório" })
+      .max(getTarifa, {
+        message: `Valor maximo é R$ ${getTarifa}`,
+      })
+      .min(1, { message: `Valor minimo é R$ 1` }),
+    country: z
+      .string()
+      .refine((value) => value !== "", {
+        message: "Selecione um País",
+      })
+      .refine((value) => value !== "brazil", {
+        message: "Por favor selecione outro País",
+      }),
+    statusActive: z.boolean().refine((value) => value === true, {
+      message: "Aceite o termo",
     }),
-  statusActive: z.boolean().refine((value) => value === true, {
-    message: "Aceite o termo",
-  }),
-});
+  })
+  .refine((obj) => {
+    if (obj.tarifaDiaria > obj.tarifa) {
+      throw new z.ZodError([
+        {
+          path: ["tarifaDiaria"],
+          message: "A tarifa diária não pode ser maior que a tarifa",
+          code: "custom",
+        },
+      ]);
+    }
+    return true;
+  });
 
 const defaultFormValues: TFormValues = {
   username: "",
   email: "",
   channel: "",
   tarifa: 1,
+  tarifaDiaria: 1,
   country: "",
   statusActive: false,
 };
@@ -47,7 +67,7 @@ export const ZodYoutubeForm = () => {
   const [data, setData] = React.useState("");
   const form = useForm<TFormValues>({
     defaultValues: defaultFormValues,
-    mode: "onBlur", // modo de validação padrão, existe onChange, onBlur e etc...
+    mode: "onChange", // modo de validação padrão, existe onChange, onBlur e etc...
     resolver: zodResolver(schema),
   });
   const {
@@ -115,6 +135,18 @@ export const ZodYoutubeForm = () => {
             })}
           />
           <p className="error">{errors.tarifa?.message}</p>
+        </div>
+
+        <div className="form-control">
+          <label htmlFor="channel">Limite diario tarifa</label>
+          <input
+            type="number"
+            id="tarifaDiaria"
+            {...register("tarifaDiaria", {
+              valueAsNumber: true,
+            })}
+          />
+          <p className="error">{errors.tarifaDiaria?.message}</p>
         </div>
 
         <div className="form-control">
