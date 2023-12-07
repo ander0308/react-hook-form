@@ -1,7 +1,9 @@
-import "./App.css";
+// import "./App.css";
+import "./AppMaterial.css";
+import { MaterialUiForm } from "./components/MaterialUiForm";
 // import { YoutubeForm } from "./components/YoutubeForm";
 // import { YupYoutubeForm } from "./components/YupYoutubeForm";
-import { ZodYoutubeForm } from "./components/ZodYoutubeForm";
+// import { ZodYoutubeForm } from "./components/ZodYoutubeForm";
 
 function App() {
   return (
@@ -14,7 +16,8 @@ function App() {
       <br />
       <br />
       <br /> */}
-      <ZodYoutubeForm />
+      {/* <ZodYoutubeForm /> */}
+      <MaterialUiForm />
     </>
   );
 }
