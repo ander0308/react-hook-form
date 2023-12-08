@@ -15,8 +15,9 @@ import {
   Select,
   TextField,
 } from "@mui/material";
+import { UserContext } from "../context/UserContext";
 
-type TFormValues = z.infer<typeof schema>;
+export type TFormValues = z.infer<typeof schema>;
 
 const schema = z.object({
   firstName: z.string().min(1, "O campo é obrigatório"),
@@ -33,16 +34,18 @@ const schema = z.object({
   age: z.number().min(1, "O campo é obrigatório"),
 });
 
-const defaultFormValues: TFormValues = {
-  firstName: "",
-  lastName: "",
-  email: "",
-  company: "",
-  phone: "",
-  age: 0,
-};
-
 export const MaterialUiForm = () => {
+  const userCtx = React.useContext(UserContext);
+
+  const defaultFormValues: TFormValues = {
+    firstName: userCtx.firstName,
+    lastName: userCtx.lastName,
+    email: userCtx.email,
+    company: userCtx.company,
+    phone: userCtx.phone,
+    age: userCtx.age,
+  };
+
   const [data, setData] = React.useState("");
   const form = useForm<TFormValues>({
     defaultValues: defaultFormValues,
@@ -155,7 +158,7 @@ export const MaterialUiForm = () => {
             <MenuItem value={20}>Twenty</MenuItem>
             <MenuItem value={30}>Thirty</MenuItem>
           </Select>
-          {!!errors.age &&(
+          {!!errors.age && (
             <FormHelperText style={{ color: "#d32f2f" }}>
               {errors.age.message}
             </FormHelperText>
