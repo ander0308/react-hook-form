@@ -1,0 +1,13 @@
+{
+  "posts": [{ "id": 1, "title": "json-server", "author": "typicode" }],
+  "comments": [{ "id": 1, "body": "some comment", "postId": 1 }],
+  "profile": { "name": "typicode" },
+  "user": {
+    "firstName": "Anderson",
+    "lastName": "Santana",
+    "email": "ander@gmail.com",
+    "company": "Sicredi",
+    "phone": "11989878999",
+    "age": 20
+  }
+}

@@ -1,7 +1,4 @@
-import {
-  useForm,
-  // Controller
-} from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
@@ -55,7 +52,8 @@ export const MaterialUiForm = () => {
   const {
     control,
     handleSubmit,
-    register,
+    setValue,
+    // register,
     reset,
     formState: { isSubmitSuccessful, errors },
   } = form;
@@ -70,6 +68,15 @@ export const MaterialUiForm = () => {
   };
 
   React.useEffect(() => {
+    setValue("firstName", userCtx.firstName);
+    setValue("lastName", userCtx.lastName);
+    setValue("email", userCtx.email);
+    setValue("company", userCtx.company);
+    setValue("phone", userCtx.phone);
+    setValue("age", userCtx.age);
+  }, [userCtx]);
+
+  React.useEffect(() => {
     if (isSubmitSuccessful) {
       reset();
     }
@@ -79,7 +86,17 @@ export const MaterialUiForm = () => {
     <div>
       <h1>Material Ui Form</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* <Controller
+        {/* <TextField
+          {...register("firstName")}
+          id="outlined-basic"
+          label="First Name"
+          variant="outlined"
+          className="inputText"
+          error={!!errors.firstName}
+          helperText={errors.firstName?.message}
+        /> */}
+
+        <Controller
           control={control}
           name="firstName"
           render={({ field, fieldState }) => (
@@ -94,76 +111,102 @@ export const MaterialUiForm = () => {
               helperText={fieldState.error?.message}
             />
           )}
-        /> */}
-        <TextField
-          {...register("firstName")}
-          id="outlined-basic"
-          label="First Name"
-          variant="outlined"
-          className="inputText"
-          error={!!errors.firstName}
-          helperText={errors.firstName?.message}
         />
 
-        <TextField
-          {...register("lastName")}
-          id="outlined-basic"
-          label="Last Name"
-          variant="outlined"
-          className="inputText"
-          error={!!errors.lastName}
-          helperText={errors.lastName?.message}
-        />
-
-        <TextField
-          {...register("email")}
-          id="outlined-basic"
-          label="Email Address"
-          variant="outlined"
-          className="inputText"
-          error={!!errors.email}
-          helperText={errors.email?.message}
-        />
-
-        <TextField
-          {...register("company")}
-          id="outlined-basic"
-          label="Company Name"
-          variant="outlined"
-          className="inputText"
-          error={!!errors.company}
-          helperText={errors.company?.message}
-        />
-
-        <TextField
-          {...register("phone")}
-          id="outlined-basic"
-          label="Phone Number"
-          variant="outlined"
-          fullWidth
-          error={!!errors.phone}
-          helperText={errors.phone?.message}
-        />
-
-        <FormControl fullWidth>
-          <InputLabel id="age-select-label">Age</InputLabel>
-          <Select
-            labelId="age-select-label"
-            id="age-select-label"
-            label="Age"
-            {...register("age")}
-            error={!!errors.age}
-          >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
-          </Select>
-          {!!errors.age && (
-            <FormHelperText style={{ color: "#d32f2f" }}>
-              {errors.age.message}
-            </FormHelperText>
+        <Controller
+          control={control}
+          name="lastName"
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="outlined-basic"
+              label="Last Name"
+              placeholder="Last Name"
+              variant="outlined"
+              className="inputText"
+              error={!!errors.lastName}
+              helperText={fieldState.error?.message}
+            />
           )}
-        </FormControl>
+        />
+
+        <Controller
+          control={control}
+          name="email"
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="outlined-basic"
+              label="Email Address"
+              placeholder="Email Address"
+              variant="outlined"
+              className="inputText"
+              error={!!errors.email}
+              helperText={fieldState.error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="company"
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="outlined-basic"
+              label="Company Name"
+              placeholder="Company Name"
+              variant="outlined"
+              className="inputText"
+              error={!!errors.company}
+              helperText={fieldState.error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="phone"
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="outlined-basic"
+              label="Phone Number"
+              placeholder="Phone Number"
+              variant="outlined"
+              className="inputText"
+              error={!!errors.phone}
+              helperText={fieldState.error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="age"
+          render={({ field, fieldState }) => (
+            <FormControl fullWidth>
+              <InputLabel id="age-select-label">Age</InputLabel>
+              <Select
+                {...field}
+                value={field.value}
+                labelId="age-select-label"
+                id="age-select-label"
+                label="Age"
+                error={!!fieldState.error}
+              >
+                <MenuItem value={10}>Ten</MenuItem>
+                <MenuItem value={20}>Twenty</MenuItem>
+                <MenuItem value={30}>Thirty</MenuItem>
+              </Select>
+              {!!fieldState.error && (
+                <FormHelperText style={{ color: "#d32f2f" }}>
+                  {fieldState.error.message}
+                </FormHelperText>
+              )}
+            </FormControl>
+          )}
+        ></Controller>
 
         <Button variant="contained" type="submit">
           Enviar Cadastro
