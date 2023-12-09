@@ -28,7 +28,7 @@ const schema = z.object({
     .string()
     .min(1, "O campo é obrigatório")
     .max(13, "Limite de 13 digitos"),
-  age: z.number().min(1, "O campo é obrigatório"),
+  tecnology: z.string().min(1, "O campo é obrigatório"),
 });
 
 export const MaterialUiForm = () => {
@@ -40,7 +40,7 @@ export const MaterialUiForm = () => {
     email: userCtx.email,
     company: userCtx.company,
     phone: userCtx.phone,
-    age: userCtx.age,
+    tecnology: userCtx.tecnology,
   };
 
   const [data, setData] = React.useState("");
@@ -55,7 +55,7 @@ export const MaterialUiForm = () => {
     setValue,
     // register,
     reset,
-    formState: { isSubmitSuccessful, errors },
+    formState: { isSubmitSuccessful, errors, isValid, isSubmitting },
   } = form;
 
   const onSubmit = (values: TFormValues) => {
@@ -68,12 +68,12 @@ export const MaterialUiForm = () => {
   };
 
   React.useEffect(() => {
-    setValue("firstName", userCtx.firstName);
-    setValue("lastName", userCtx.lastName);
-    setValue("email", userCtx.email);
-    setValue("company", userCtx.company);
-    setValue("phone", userCtx.phone);
-    setValue("age", userCtx.age);
+    setValue("firstName", userCtx.firstName, { shouldValidate: true });
+    setValue("lastName", userCtx.lastName, { shouldValidate: true });
+    setValue("email", userCtx.email, { shouldValidate: true });
+    setValue("company", userCtx.company, { shouldValidate: true });
+    setValue("phone", userCtx.phone, { shouldValidate: true });
+    setValue("tecnology", userCtx.tecnology, { shouldValidate: true });
   }, [userCtx]);
 
   React.useEffect(() => {
@@ -84,7 +84,7 @@ export const MaterialUiForm = () => {
 
   return (
     <div>
-      <h1>Material Ui Form</h1>
+      <h1>Please register now.</h1>
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* <TextField
           {...register("firstName")}
@@ -183,21 +183,21 @@ export const MaterialUiForm = () => {
 
         <Controller
           control={control}
-          name="age"
+          name="tecnology"
           render={({ field, fieldState }) => (
             <FormControl fullWidth>
-              <InputLabel id="age-select-label">Age</InputLabel>
+              <InputLabel id="age-select-label">Tecnology</InputLabel>
               <Select
                 {...field}
                 value={field.value}
                 labelId="age-select-label"
                 id="age-select-label"
-                label="Age"
+                label="Tecnology"
                 error={!!fieldState.error}
               >
-                <MenuItem value={10}>Ten</MenuItem>
-                <MenuItem value={20}>Twenty</MenuItem>
-                <MenuItem value={30}>Thirty</MenuItem>
+                <MenuItem value="react">React</MenuItem>
+                <MenuItem value="java">Java</MenuItem>
+                <MenuItem value="php">Php</MenuItem>
               </Select>
               {!!fieldState.error && (
                 <FormHelperText style={{ color: "#d32f2f" }}>
@@ -208,7 +208,11 @@ export const MaterialUiForm = () => {
           )}
         ></Controller>
 
-        <Button variant="contained" type="submit">
+        <Button
+          variant="contained"
+          type="submit"
+          disabled={!isValid || isSubmitting}
+        >
           Enviar Cadastro
         </Button>
       </form>

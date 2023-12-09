@@ -5,9 +5,9 @@
   "user": {
     "firstName": "Anderson",
     "lastName": "Santana",
-    "email": "ander@gmail.com",
-    "company": "Sicredi",
+    "email": "anderson@gmail.com",
+    "company": "Nasa",
     "phone": "11989878999",
-    "age": 20
+    "age": "react"
   }
 }

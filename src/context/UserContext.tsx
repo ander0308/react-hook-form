@@ -8,7 +8,7 @@ const userContextValues = {
   email: "",
   company: "",
   phone: "",
-  age: 0,
+  tecnology: "",
 };
 
 export const UserContext = React.createContext<TFormValues>(userContextValues);
@@ -25,7 +25,7 @@ export const UserProvider = ({ children }: TUserProvider) => {
     email: data?.email || "",
     company: data?.company || "",
     phone: data?.phone || "",
-    age: data?.age || 20,
+    tecnology: data?.age || "",
   };
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>;
