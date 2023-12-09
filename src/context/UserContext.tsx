@@ -25,7 +25,7 @@ export const UserProvider = ({ children }: TUserProvider) => {
     email: data?.email || "",
     company: data?.company || "",
     phone: data?.phone || "",
-    tecnology: data?.age || "",
+    tecnology: data?.tecnology || "",
   };
 
   return <UserContext.Provider value={values}>{children}</UserContext.Provider>;
