@@ -1,5 +1,5 @@
 import React from "react";
-import { TFormValues } from "../components/MaterialUiForm";
+import { TFormValues } from "../pages/MaterialUiForm";
 
 export const useFetch = () => {
   const [data, setData] = React.useState<TFormValues>();

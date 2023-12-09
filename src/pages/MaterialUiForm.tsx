@@ -11,14 +11,17 @@ import {
   MenuItem,
   Select,
   TextField,
+  Typography,
 } from "@mui/material";
 import { UserContext } from "../context/UserContext";
+import { useNavigate } from "react-router-dom";
 
 export type TFormValues = z.infer<typeof schema>;
 
 const schema = z.object({
   firstName: z.string().min(1, "O campo é obrigatório"),
   lastName: z.string().min(1, "O campo é obrigatório"),
+  age: z.string().min(1, "O campo é obrigatório").optional(),
   email: z
     .string()
     .min(1, "O campo é obrigatório")
@@ -32,11 +35,13 @@ const schema = z.object({
 });
 
 export const MaterialUiForm = () => {
+  const navigate = useNavigate();
   const userCtx = React.useContext(UserContext);
 
   const defaultFormValues: TFormValues = {
     firstName: userCtx.firstName,
     lastName: userCtx.lastName,
+    age: userCtx.age,
     email: userCtx.email,
     company: userCtx.company,
     phone: userCtx.phone,
@@ -46,7 +51,7 @@ export const MaterialUiForm = () => {
   const [data, setData] = React.useState("");
   const form = useForm<TFormValues>({
     defaultValues: defaultFormValues,
-    mode: "onTouched", // modo de validação padrão, existe onChange, onBlur e etc...
+    mode: "onChange", // modo de validação padrão, existe onChange, onBlur e etc...
     resolver: zodResolver(schema),
   });
   const {
@@ -54,8 +59,13 @@ export const MaterialUiForm = () => {
     handleSubmit,
     setValue,
     // register,
-    reset,
-    formState: { isSubmitSuccessful, errors, isValid, isSubmitting },
+    // reset,
+    formState: {
+      // isSubmitSuccessful,
+      errors,
+      isValid,
+      isSubmitting,
+    },
   } = form;
 
   const onSubmit = (values: TFormValues) => {
@@ -65,26 +75,32 @@ export const MaterialUiForm = () => {
       "form_zod_material_values_storage",
       JSON.stringify(values)
     );
+    navigate("/revisao");
   };
 
   React.useEffect(() => {
-    setValue("firstName", userCtx.firstName, { shouldValidate: true });
+    setValue("firstName", userCtx.firstName, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
     setValue("lastName", userCtx.lastName, { shouldValidate: true });
+    setValue("age", userCtx.age, { shouldValidate: true });
     setValue("email", userCtx.email, { shouldValidate: true });
     setValue("company", userCtx.company, { shouldValidate: true });
     setValue("phone", userCtx.phone, { shouldValidate: true });
     setValue("tecnology", userCtx.tecnology, { shouldValidate: true });
   }, [userCtx]);
 
-  React.useEffect(() => {
-    if (isSubmitSuccessful) {
-      reset();
-    }
-  }, [isSubmitSuccessful, reset]);
+  // React.useEffect(() => {
+  //   if (isSubmitSuccessful) {
+  //     reset();
+  //   }
+  // }, [isSubmitSuccessful, reset]);
 
   return (
     <div>
-      <h1>Please register now.</h1>
+      <Typography variant="h2">Please register now.</Typography>
+      <br />
       <form onSubmit={handleSubmit(onSubmit)}>
         {/* <TextField
           {...register("firstName")}
@@ -125,6 +141,23 @@ export const MaterialUiForm = () => {
               variant="outlined"
               className="inputText"
               error={!!errors.lastName}
+              helperText={fieldState.error?.message}
+            />
+          )}
+        />
+
+        <Controller
+          control={control}
+          name="age"
+          render={({ field, fieldState }) => (
+            <TextField
+              {...field}
+              id="outlined-basic"
+              label="Age"
+              placeholder="Age"
+              variant="outlined"
+              className="inputText"
+              error={!!errors.age}
               helperText={fieldState.error?.message}
             />
           )}
