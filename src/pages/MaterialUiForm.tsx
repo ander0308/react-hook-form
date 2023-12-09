@@ -14,54 +14,38 @@ import {
   Typography,
 } from "@mui/material";
 import { UserContext } from "../context/UserContext";
-import { useNavigate } from "react-router-dom";
+import { schema } from "../shema/materialUiFormShema";
 
 export type TFormValues = z.infer<typeof schema>;
 
-const schema = z.object({
-  firstName: z.string().min(1, "O campo é obrigatório"),
-  lastName: z.string().min(1, "O campo é obrigatório"),
-  age: z.string().min(1, "O campo é obrigatório").optional(),
-  email: z
-    .string()
-    .min(1, "O campo é obrigatório")
-    .email("Formato de email inválido"),
-  company: z.string().min(1, "O campo é obrigatório"),
-  phone: z
-    .string()
-    .min(1, "O campo é obrigatório")
-    .max(13, "Limite de 13 digitos"),
-  tecnology: z.string().min(1, "O campo é obrigatório"),
-});
+function goToPage(page: string) {
+  window.location.href = page
+}
 
 export const MaterialUiForm = () => {
-  const navigate = useNavigate();
-  const userCtx = React.useContext(UserContext);
+
+  const { userDataContext, setDataStorage } = React.useContext(UserContext);
 
   const defaultFormValues: TFormValues = {
-    firstName: userCtx.firstName,
-    lastName: userCtx.lastName,
-    age: userCtx.age,
-    email: userCtx.email,
-    company: userCtx.company,
-    phone: userCtx.phone,
-    tecnology: userCtx.tecnology,
+    firstName: userDataContext.firstName,
+    lastName: userDataContext.lastName,
+    age: userDataContext.age,
+    email: userDataContext.email,
+    company: userDataContext.company,
+    phone: userDataContext.phone,
+    tecnology: userDataContext.tecnology,
   };
 
-  const [data, setData] = React.useState("");
   const form = useForm<TFormValues>({
     defaultValues: defaultFormValues,
-    mode: "onChange", // modo de validação padrão, existe onChange, onBlur e etc...
+    mode: "onTouched", // modo de validação padrão, existe onChange, onBlur e etc...
     resolver: zodResolver(schema),
   });
   const {
     control,
     handleSubmit,
     setValue,
-    // register,
-    // reset,
     formState: {
-      // isSubmitSuccessful,
       errors,
       isValid,
       isSubmitting,
@@ -69,49 +53,26 @@ export const MaterialUiForm = () => {
   } = form;
 
   const onSubmit = (values: TFormValues) => {
-    console.log("Form Values", values);
-    setData(JSON.stringify(values, null, 2));
-    sessionStorage.setItem(
-      "form_zod_material_values_storage",
-      JSON.stringify(values)
-    );
-    navigate("/revisao");
+    setDataStorage(values)
+    goToPage('/revisao')
   };
 
   React.useEffect(() => {
-    setValue("firstName", userCtx.firstName, {
-      shouldValidate: true,
-      shouldDirty: true,
-    });
-    setValue("lastName", userCtx.lastName, { shouldValidate: true });
-    setValue("age", userCtx.age, { shouldValidate: true });
-    setValue("email", userCtx.email, { shouldValidate: true });
-    setValue("company", userCtx.company, { shouldValidate: true });
-    setValue("phone", userCtx.phone, { shouldValidate: true });
-    setValue("tecnology", userCtx.tecnology, { shouldValidate: true });
-  }, [userCtx]);
-
-  // React.useEffect(() => {
-  //   if (isSubmitSuccessful) {
-  //     reset();
-  //   }
-  // }, [isSubmitSuccessful, reset]);
+    setValue("firstName", userDataContext.firstName, { shouldValidate: true });
+    setValue("lastName", userDataContext.lastName, { shouldValidate: true });
+    setValue("age", userDataContext.age, { shouldValidate: true });
+    setValue("email", userDataContext.email, { shouldValidate: true });
+    setValue("company", userDataContext.company, { shouldValidate: true });
+    setValue("phone", userDataContext.phone, { shouldValidate: true });
+    setValue("tecnology", userDataContext.tecnology, { shouldValidate: true });
+  }, [userDataContext]);
 
   return (
     <div>
       <Typography variant="h2">Please register now.</Typography>
       <br />
       <form onSubmit={handleSubmit(onSubmit)}>
-        {/* <TextField
-          {...register("firstName")}
-          id="outlined-basic"
-          label="First Name"
-          variant="outlined"
-          className="inputText"
-          error={!!errors.firstName}
-          helperText={errors.firstName?.message}
-        /> */}
-
+        
         <Controller
           control={control}
           name="firstName"
@@ -249,7 +210,7 @@ export const MaterialUiForm = () => {
           Enviar Cadastro
         </Button>
       </form>
-      <pre>{data}</pre>
+      {/* <pre>{data}</pre> */}
       <DevTool control={control} placement="top-right" />
     </div>
   );
