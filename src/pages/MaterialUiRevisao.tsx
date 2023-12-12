@@ -3,16 +3,14 @@ import { UserContext } from "../context/UserContext";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-export const MaterialUiFormRevisao = () => {
+const MaterialUiFormRevisao = () => {
   const navigate = useNavigate();
   const [data, setData] = React.useState("");
 
   const dataCtx = React.useContext(UserContext);
 
   React.useEffect(() => {
-    const dataStorage = sessionStorage.getItem(
-      "form_values_storage"
-    );
+    const dataStorage = sessionStorage.getItem("form_values_storage");
 
     if (dataStorage) {
       setData(dataStorage);
@@ -28,9 +26,11 @@ export const MaterialUiFormRevisao = () => {
       <Box>
         <pre>{data}</pre>
       </Box>
-      <Button variant="outlined" onClick={() => navigate("/")}>
+      <Button variant="outlined" onClick={() => navigate("/form")}>
         Voltar
       </Button>
     </>
   );
 };
+
+export default MaterialUiFormRevisao;

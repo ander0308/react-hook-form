@@ -46,6 +46,7 @@ export const UserProvider = ({ children }: TUserProvider) => {
   const [values, setValues] = React.useState<TFormValues>(userContextValues.userDataContext);
 
   const getDataFromAPI = async () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     return await useFetch();
   }
 

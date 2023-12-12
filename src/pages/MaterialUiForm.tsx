@@ -19,11 +19,10 @@ import { schema } from "../shema/materialUiFormShema";
 export type TFormValues = z.infer<typeof schema>;
 
 function goToPage(page: string) {
-  window.location.href = page
+  window.location.href = page;
 }
 
-export const MaterialUiForm = () => {
-
+const MaterialUiForm = () => {
   const { userDataContext, setDataStorage } = React.useContext(UserContext);
 
   const defaultFormValues: TFormValues = {
@@ -45,16 +44,12 @@ export const MaterialUiForm = () => {
     control,
     handleSubmit,
     setValue,
-    formState: {
-      errors,
-      isValid,
-      isSubmitting,
-    },
+    formState: { errors, isValid, isSubmitting },
   } = form;
 
   const onSubmit = (values: TFormValues) => {
-    setDataStorage(values)
-    goToPage('/revisao')
+    setDataStorage(values);
+    goToPage("/revisao");
   };
 
   React.useEffect(() => {
@@ -72,7 +67,6 @@ export const MaterialUiForm = () => {
       <Typography variant="h2">Please register now.</Typography>
       <br />
       <form onSubmit={handleSubmit(onSubmit)}>
-        
         <Controller
           control={control}
           name="firstName"
@@ -215,3 +209,5 @@ export const MaterialUiForm = () => {
     </div>
   );
 };
+
+export default MaterialUiForm;
