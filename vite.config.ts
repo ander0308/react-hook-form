@@ -13,7 +13,7 @@ export default defineConfig({
       exposes: {
         "./routes": "./src/routes/index.tsx",
       },
-      shared: [],
+      shared: ["react", "react-dom", "react-router-dom"],
     }),
   ],
   server: {
@@ -21,5 +21,11 @@ export default defineConfig({
   },
   preview: {
     port: 4402,
+  },
+  build: {
+    modulePreload: false,
+    target: "esnext",
+    minify: false,
+    cssCodeSplit: false,
   },
 });

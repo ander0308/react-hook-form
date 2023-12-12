@@ -1,5 +1,5 @@
 import { useForm, Controller } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
+// import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import React from "react";
@@ -49,7 +49,7 @@ const MaterialUiForm = () => {
 
   const onSubmit = (values: TFormValues) => {
     setDataStorage(values);
-    goToPage("/revisao");
+    goToPage("/app2/revisao");
   };
 
   React.useEffect(() => {
@@ -205,7 +205,7 @@ const MaterialUiForm = () => {
         </Button>
       </form>
       {/* <pre>{data}</pre> */}
-      <DevTool control={control} placement="top-right" />
+      {/* <DevTool control={control} placement="top-right" /> */}
     </div>
   );
 };
