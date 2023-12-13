@@ -26,7 +26,7 @@ const MaterialUiFormRevisao = () => {
       <Box>
         <pre>{data}</pre>
       </Box>
-      <Button variant="outlined" onClick={() => navigate("/form")}>
+      <Button variant="outlined" onClick={() => navigate("/app2/form")}>
         Voltar
       </Button>
     </>

@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { TFormValues } from "../pages/MaterialUiForm";
+import { TFormValues } from "../pages/MaterialUiCadastro";
 import { useFetch } from "../hooks/useFetch";
 
 const KEY_SESSION_STORAGE = "form_values_storage";

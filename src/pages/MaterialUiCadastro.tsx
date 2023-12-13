@@ -22,7 +22,7 @@ function goToPage(page: string) {
   window.location.href = page;
 }
 
-const MaterialUiForm = () => {
+const MaterialUiCadastro = () => {
   const { userDataContext, setDataStorage } = React.useContext(UserContext);
 
   const defaultFormValues: TFormValues = {
@@ -210,4 +210,4 @@ const MaterialUiForm = () => {
   );
 };
 
-export default MaterialUiForm;
+export default MaterialUiCadastro;

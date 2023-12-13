@@ -1,7 +1,7 @@
 import React, { ComponentType } from "react";
 
-import MaterialUiForm from "../pages/MaterialUiForm";
-import MaterialUiFormRevisao from "../pages/MaterialUiRevisao";
+import MaterialUiCadastro from "../pages/MaterialUiCadastro";
+import MaterialUiRevisao from "../pages/MaterialUiRevisao";
 import Home from "../pages/Home";
 import { UserProvider } from "../context/UserContext";
 
@@ -12,7 +12,7 @@ export type TRoutePaths = {
 
 const withProvider = (Component: ComponentType) => (
   <UserProvider>
-    <Component  />
+    <Component />
   </UserProvider>
 );
 
@@ -24,11 +24,11 @@ const routesPaths = (): TRoutePaths[] => {
     },
     {
       path: "/app2/form",
-      element: withProvider(MaterialUiForm),
+      element: withProvider(MaterialUiCadastro),
     },
     {
       path: "/app2/revisao",
-      element: withProvider(MaterialUiFormRevisao),
+      element: withProvider(MaterialUiRevisao),
     },
   ];
 };
