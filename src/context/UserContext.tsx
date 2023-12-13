@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import { TFormValues } from "../pages/MaterialUiForm";
+import { TFormValues } from "../pages/MaterialUiCadastro";
 import { useFetch } from "../hooks/useFetch";
 
 const KEY_SESSION_STORAGE = "form_values_storage";
@@ -46,6 +46,7 @@ export const UserProvider = ({ children }: TUserProvider) => {
   const [values, setValues] = React.useState<TFormValues>(userContextValues.userDataContext);
 
   const getDataFromAPI = async () => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     return await useFetch();
   }
 

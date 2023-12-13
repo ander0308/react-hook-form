@@ -1,5 +1,5 @@
 import { useForm, Controller } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
+// import { DevTool } from "@hookform/devtools";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import React from "react";
@@ -19,11 +19,10 @@ import { schema } from "../shema/materialUiFormShema";
 export type TFormValues = z.infer<typeof schema>;
 
 function goToPage(page: string) {
-  window.location.href = page
+  window.location.href = page;
 }
 
-export const MaterialUiForm = () => {
-
+const MaterialUiCadastro = () => {
   const { userDataContext, setDataStorage } = React.useContext(UserContext);
 
   const defaultFormValues: TFormValues = {
@@ -45,16 +44,12 @@ export const MaterialUiForm = () => {
     control,
     handleSubmit,
     setValue,
-    formState: {
-      errors,
-      isValid,
-      isSubmitting,
-    },
+    formState: { errors, isValid, isSubmitting },
   } = form;
 
   const onSubmit = (values: TFormValues) => {
-    setDataStorage(values)
-    goToPage('/revisao')
+    setDataStorage(values);
+    goToPage("/app2/revisao");
   };
 
   React.useEffect(() => {
@@ -72,7 +67,6 @@ export const MaterialUiForm = () => {
       <Typography variant="h2">Please register now.</Typography>
       <br />
       <form onSubmit={handleSubmit(onSubmit)}>
-        
         <Controller
           control={control}
           name="firstName"
@@ -211,7 +205,9 @@ export const MaterialUiForm = () => {
         </Button>
       </form>
       {/* <pre>{data}</pre> */}
-      <DevTool control={control} placement="top-right" />
+      {/* <DevTool control={control} placement="top-right" /> */}
     </div>
   );
 };
+
+export default MaterialUiCadastro;
