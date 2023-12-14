@@ -6,10 +6,13 @@ import React from "react";
 import {
   Button,
   FormControl,
+  FormControlLabel,
+  FormGroup,
   FormHelperText,
   InputLabel,
   MenuItem,
   Select,
+  Switch,
   TextField,
   Typography,
 } from "@mui/material";
@@ -33,6 +36,8 @@ const MaterialUiCadastro = () => {
     company: userDataContext.company,
     phone: userDataContext.phone,
     tecnology: userDataContext.tecnology,
+    optionOne: userDataContext.optionOne,
+    optionTwo: userDataContext.optionTwo,
   };
 
   const form = useForm<TFormValues>({
@@ -44,6 +49,7 @@ const MaterialUiCadastro = () => {
     control,
     handleSubmit,
     setValue,
+
     formState: { errors, isValid, isSubmitting },
   } = form;
 
@@ -60,6 +66,8 @@ const MaterialUiCadastro = () => {
     setValue("company", userDataContext.company, { shouldValidate: true });
     setValue("phone", userDataContext.phone, { shouldValidate: true });
     setValue("tecnology", userDataContext.tecnology, { shouldValidate: true });
+    setValue("optionOne", userDataContext.optionOne, { shouldValidate: true });
+    setValue("optionTwo", userDataContext.optionTwo, { shouldValidate: true });
   }, [userDataContext]);
 
   return (
@@ -194,7 +202,34 @@ const MaterialUiCadastro = () => {
               )}
             </FormControl>
           )}
-        ></Controller>
+        />
+
+        <FormGroup>
+          <Controller
+            control={control}
+            name="optionOne"
+            render={({ field }) => (
+              <FormControlLabel
+                control={
+                  <Switch onChange={field.onChange} checked={field.value} />
+                }
+                label="Option 1"
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="optionTwo"
+            render={({ field }) => (
+              <FormControlLabel
+                control={
+                  <Switch onChange={field.onChange} checked={field.value} />
+                }
+                label="Option 2"
+              />
+            )}
+          />
+        </FormGroup>
 
         <Button
           variant="contained"

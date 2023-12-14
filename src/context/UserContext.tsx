@@ -5,12 +5,12 @@ import { useFetch } from "../hooks/useFetch";
 const KEY_SESSION_STORAGE = "form_values_storage";
 
 type TUserContext = {
-  setDataStorage: (values: TFormValues) => void,
-  userDataContext: TFormValues
-}
+  setDataStorage: (values: TFormValues) => void;
+  userDataContext: TFormValues;
+};
 
 const userContextValues = {
-  setDataStorage: () => { },
+  setDataStorage: () => {},
   userDataContext: {
     firstName: "",
     lastName: "",
@@ -19,20 +19,17 @@ const userContextValues = {
     company: "",
     phone: "",
     tecnology: "",
-  }
+    optionOne: false,
+    optionTwo: false,
+  },
 };
 
 function getDataStorage() {
-  return sessionStorage.getItem(
-    KEY_SESSION_STORAGE
-  );
+  return sessionStorage.getItem(KEY_SESSION_STORAGE);
 }
 
 function setDataStorage(values: TFormValues) {
-  sessionStorage.setItem(
-    KEY_SESSION_STORAGE,
-    JSON.stringify(values)
-  );
+  sessionStorage.setItem(KEY_SESSION_STORAGE, JSON.stringify(values));
 }
 
 export const UserContext = React.createContext<TUserContext>(userContextValues);
@@ -42,13 +39,14 @@ type TUserProvider = {
 };
 
 export const UserProvider = ({ children }: TUserProvider) => {
-
-  const [values, setValues] = React.useState<TFormValues>(userContextValues.userDataContext);
+  const [values, setValues] = React.useState<TFormValues>(
+    userContextValues.userDataContext
+  );
 
   const getDataFromAPI = async () => {
     // eslint-disable-next-line react-hooks/rules-of-hooks
     return await useFetch();
-  }
+  };
 
   React.useEffect(() => {
     const loadData = async () => {
@@ -64,10 +62,11 @@ export const UserProvider = ({ children }: TUserProvider) => {
           company: objStorage?.company || "",
           phone: objStorage?.phone || "",
           tecnology: objStorage?.tecnology || "",
+          optionOne: objStorage.optionOne || false,
+          optionTwo: objStorage.optionTwo || false,
         });
-      }
-      else {
-        const data = await getDataFromAPI()
+      } else {
+        const data = await getDataFromAPI();
         setValues({
           firstName: data?.firstName || "",
           lastName: data?.lastName || "",
@@ -76,11 +75,17 @@ export const UserProvider = ({ children }: TUserProvider) => {
           company: data?.company || "",
           phone: data?.phone || "",
           tecnology: data?.tecnology || "",
+          optionOne: data.optionOne || false,
+          optionTwo: data.optionTwo || false,
         });
       }
-    }
+    };
     loadData();
   }, []);
 
-  return <UserContext.Provider value={{userDataContext: values, setDataStorage}}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider value={{ userDataContext: values, setDataStorage }}>
+      {children}
+    </UserContext.Provider>
+  );
 };
