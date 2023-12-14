@@ -68,7 +68,7 @@ const MaterialUiCadastro = () => {
     setValue("tecnology", userDataContext.tecnology, { shouldValidate: true });
     setValue("optionOne", userDataContext.optionOne, { shouldValidate: true });
     setValue("optionTwo", userDataContext.optionTwo, { shouldValidate: true });
-  }, [userDataContext]);
+  }, [setValue, userDataContext]);
 
   return (
     <div>
