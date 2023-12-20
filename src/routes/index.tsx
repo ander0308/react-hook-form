@@ -4,6 +4,7 @@ import MaterialUiCadastro from "../pages/MaterialUiCadastro";
 import MaterialUiRevisao from "../pages/MaterialUiRevisao";
 import Home from "../pages/Home";
 import { UserProvider } from "../context/UserContext";
+import MaterialUiCadastroTarifas from "../pages/MaterialUiCadastroTarifas";
 
 export type TRoutePaths = {
   path: string;
@@ -29,6 +30,10 @@ const routesPaths = (): TRoutePaths[] => {
     {
       path: "/app2/revisao",
       element: withProvider(MaterialUiRevisao),
+    },
+    {
+      path: "/app2/cadastro-tarifas",
+      element: withProvider(MaterialUiCadastroTarifas),
     },
   ];
 };

@@ -9,5 +9,47 @@
     "company": "Nasa",
     "phone": "11989878999",
     "tecnology": "react"
+  },
+  "data-tarifas": {
+    "permiteIbpj": false,
+    "permiteArquivo": false,
+    "respeitaSequenciaArquivo": false,
+    "tarifaAjusteAutomatico": false,
+    "numFloat": {
+      "padrao": 1,
+      "opcoes": [1, 2, 3]
+    },
+    "tarifaDiaDebito": {
+      "padrao": 2,
+      "valorMinimo": 0,
+      "valorMaximo": 9
+    },
+    "tarifaTipoIndiceReajuste": {
+      "padrao": "IGPM",
+      "opcoes": ["IGPM", "IPCA", "IPC"]
+    },
+    "tarifas": [
+      {
+        "codigo": 1,
+        "descricao": "Conta corrente",
+        "padrao": 0,
+        "valorMinimo": 2,
+        "valorMaximo": 8
+      },
+      {
+        "codigo": 2,
+        "descricao": "Outros bancos",
+        "padrao": 0,
+        "valorMinimo": 2,
+        "valorMaximo": 10
+      },
+      {
+        "codigo": 3,
+        "descricao": "Conta salario",
+        "padrao": 0,
+        "valorMinimo": 2,
+        "valorMaximo": 12
+      }
+    ]
   }
 }
