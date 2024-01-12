@@ -1,45 +1,27 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-// import { DevTool } from "@hookform/devtools";
+import { DevTool } from "@hookform/devtools";
 import { Button, TextField, Typography } from "@mui/material";
+
 import { useNavigate } from "react-router-dom";
-
-type TLimites = {
-  limitePixDiario: number;
-  limitePixTransacao: number;
-  limiteBoletoDiario: number;
-  limiteBoletoTransacao: number;
-  limiteCodBarrasDiario: number;
-  limiteCodBarrasTransacao: number;
-};
-
-// type TValuesStorage = {
-//   limiteBoletoDiario: number;
-//   limiteBoletoTransacao: number;
-//   limiteCodBarrasDiario: number;
-//   limiteCodBarrasTransacao: number;
-//   limitePixDiario: number;
-//   limitePixTransacao: number;
-//   tarifaBoleto: number;
-//   tarifaCodBarras: number;
-//   tarifaPix: number;
-// };
-
-const defaultValues = {
-  limitePixDiario: 10,
-  limitePixTransacao: 11,
-  limiteBoletoDiario: 12,
-  limiteBoletoTransacao: 8,
-  limiteCodBarrasDiario: 14,
-  limiteCodBarrasTransacao: 15,
-};
+import { TLimites } from "../../types/formTypes";
+import { useStorage } from "../../hooks/useStorage";
 
 const Limites = () => {
   const navigate = useNavigate();
+  const { objStorage, dataStorage } = useStorage();
+
+  const defaultValues = {
+    limitePixDiario: dataStorage.limitePixDiario || 16,
+    limitePixTransacao: dataStorage.limitePixTransacao || 9,
+    limiteBoletoDiario: dataStorage.limiteBoletoDiario || 10,
+    limiteBoletoTransacao: dataStorage.limiteBoletoTransacao || 8,
+    limiteCodBarrasDiario: dataStorage.limiteCodBarrasDiario || 11,
+    limiteCodBarrasTransacao: dataStorage.limiteCodBarrasTransacao || 12,
+  };
 
   function goToPage(page: string) {
-    // window.location.href = page;
-    navigate(page);
+    navigate(`./../${page}`);
   }
 
   const form = useForm({
@@ -56,16 +38,50 @@ const Limites = () => {
   } = form;
 
   const onSubmit = (values: TLimites) => {
-    console.log(values);
-    sessionStorage.setItem("form_limites", JSON.stringify(values));
-    goToPage("./../tarifas");
+    const valuesStorage = {
+      ...dataStorage,
+      ...values,
+    };
+    sessionStorage.setItem("form_limites", JSON.stringify(valuesStorage));
+    goToPage("tarifas");
+
+    console.log(valuesStorage);
   };
 
   const watchLimitePixDiario = watch("limitePixDiario");
   const watchLimiteBoletoDiario = watch("limiteBoletoDiario");
   const watchLimiteCodBarrasDiario = watch("limiteCodBarrasDiario");
 
+  const loadDataByStorage = () => {
+    if (objStorage) {
+      setValue("limitePixDiario", dataStorage.limitePixDiario, {
+        shouldValidate: true,
+      });
+      setValue("limitePixTransacao", dataStorage.limitePixTransacao, {
+        shouldValidate: true,
+      });
+      setValue("limiteBoletoDiario", dataStorage.limiteBoletoDiario, {
+        shouldValidate: true,
+      });
+      setValue("limiteBoletoTransacao", dataStorage.limiteBoletoTransacao, {
+        shouldValidate: true,
+      });
+      setValue("limiteCodBarrasDiario", dataStorage.limiteCodBarrasDiario, {
+        shouldValidate: true,
+      });
+      setValue(
+        "limiteCodBarrasTransacao",
+        dataStorage.limiteCodBarrasTransacao,
+        {
+          shouldValidate: true,
+        }
+      );
+    }
+  };
+
   React.useEffect(() => {
+    loadDataByStorage();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     trigger([
       "limitePixDiario",
       "limitePixTransacao",
@@ -75,42 +91,6 @@ const Limites = () => {
       "limiteCodBarrasTransacao",
     ]);
   }, [trigger]);
-
-  // const objStorage = sessionStorage.getItem("form_limites");
-  // React.useEffect(() => {
-  //   const loadData = async () => {
-  //     if (objStorage) {
-  //       const dataStorage: TValuesStorage = objStorage
-  //         ? JSON.parse(objStorage)
-  //         : {};
-
-  //       setValue("limitePixDiario", dataStorage.limitePixDiario, {
-  //         shouldValidate: true,
-  //       });
-  //       setValue("limitePixTransacao", dataStorage.limitePixTransacao, {
-  //         shouldValidate: true,
-  //       });
-  //       setValue("limiteBoletoDiario", dataStorage.limiteBoletoDiario, {
-  //         shouldValidate: true,
-  //       });
-  //       setValue("limiteBoletoTransacao", dataStorage.limiteBoletoTransacao, {
-  //         shouldValidate: true,
-  //       });
-  //       setValue("limiteCodBarrasDiario", dataStorage.limiteCodBarrasDiario, {
-  //         shouldValidate: true,
-  //       });
-  //       setValue(
-  //         "limiteCodBarrasTransacao",
-  //         dataStorage.limiteCodBarrasTransacao,
-  //         {
-  //           shouldValidate: true,
-  //         }
-  //       );
-  //     }
-  //   };
-
-  //   loadData();
-  // }, [setValue, objStorage]);
 
   return (
     <div>
@@ -335,11 +315,10 @@ const Limites = () => {
           type="submit"
           disabled={!isValid || isSubmitting}
         >
-          Enviar Cadastro
+          Proximo
         </Button>
       </form>
-      {/* <pre>{data}</pre> */}
-      {/* <DevTool control={control} placement="top-right" /> */}
+      <DevTool control={control} placement="top-right" />
     </div>
   );
 };

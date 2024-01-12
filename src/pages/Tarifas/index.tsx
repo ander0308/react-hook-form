@@ -1,25 +1,26 @@
 import React from "react";
 import { useForm, Controller } from "react-hook-form";
-// import { DevTool } from "@hookform/devtools";
-import { Button, TextField, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { DevTool } from "@hookform/devtools";
 
-type TLimites = {
-  tarifaPix: number;
-  tarifaBoleto: number;
-  tarifaCodBarras: number;
+import { Button, Stack, TextField, Typography } from "@mui/material";
+import { TTarifas } from "../../types/formTypes";
+import { useStorage } from "../../hooks/useStorage";
+
+const clearStorage = () => {
+  sessionStorage.removeItem("form_limites");
 };
-
-const defaultValues = {
-  tarifaPix: 0,
-  tarifaBoleto: 14,
-  tarifaCodBarras: 16,
-};
-
-// function goToPage(page: string) {
-//   window.location.href = page;
-// }
 
 const Tarifas = () => {
+  const navigate = useNavigate();
+  const { objStorage, dataStorage } = useStorage();
+
+  const defaultValues = {
+    tarifaPix: dataStorage.tarifaPix || 10,
+    tarifaBoleto: dataStorage.tarifaBoleto || 14,
+    tarifaCodBarras: dataStorage.tarifaCodBarras || 16,
+  };
+
   const form = useForm({
     defaultValues,
     mode: "onChange", // modo de validação padrão, existe onChange, onBlur e etc...
@@ -32,20 +33,38 @@ const Tarifas = () => {
     formState: { errors, isValid, isSubmitting },
   } = form;
 
-  const onSubmit = (values: TLimites) => {
-    const objStorage = sessionStorage.getItem("form_limites");
-    const dataStorage = objStorage ? JSON.parse(objStorage) : {};
+  const goToPage = (page: string) => {
+    navigate(`./../${page}`);
+  };
 
-    const newDataValues = {
+  const onSubmit = (values: TTarifas) => {
+    const postDataValues = {
       ...dataStorage,
       ...values,
     };
 
-    sessionStorage.setItem("form_limites", JSON.stringify(newDataValues));
-    console.log(newDataValues);
+    sessionStorage.setItem("form_limites", JSON.stringify(postDataValues));
+    console.log(postDataValues);
+  };
+
+  const loadDataStorage = () => {
+    const pix = dataStorage.tarifaPix;
+    const boleto = dataStorage.tarifaBoleto;
+    const codBarras = dataStorage.tarifaCodBarras;
+
+    if ((objStorage && pix) || boleto || codBarras) {
+      setValue("tarifaPix", dataStorage.tarifaPix, { shouldValidate: true });
+      setValue("tarifaBoleto", dataStorage.tarifaBoleto, {
+        shouldValidate: true,
+      });
+      setValue("tarifaCodBarras", dataStorage.tarifaCodBarras, {
+        shouldValidate: true,
+      });
+    }
   };
 
   React.useEffect(() => {
+    loadDataStorage();
     trigger(["tarifaPix", "tarifaBoleto", "tarifaCodBarras"]);
   }, [trigger]);
 
@@ -74,8 +93,8 @@ const Tarifas = () => {
             <TextField
               {...field}
               id="outlined-basic"
-              label="Limite Diário"
-              placeholder="Limite Diário"
+              label="Tarifa Pix"
+              placeholder="Tarifa Pix"
               variant="outlined"
               className="inputText"
               onChange={({ target }) => {
@@ -112,8 +131,8 @@ const Tarifas = () => {
             <TextField
               {...field}
               id="outlined-basic"
-              label="Limite Diário"
-              placeholder="Limite Diário"
+              label="Tarifa Boleto"
+              placeholder="Tarifa Boleto"
               variant="outlined"
               className="inputText"
               onChange={({ target }) => {
@@ -142,16 +161,16 @@ const Tarifas = () => {
               message: "O Valor não pode ser maior do que 1",
             },
             max: {
-              value: 10,
-              message: "O Valor não pode ser maior do que 10",
+              value: 20,
+              message: "O Valor não pode ser maior do que 20",
             },
           }}
           render={({ field, fieldState }) => (
             <TextField
               {...field}
               id="outlined-basic"
-              label="Limite Diário"
-              placeholder="Limite Diário"
+              label="Tarifa Código Barras Diário"
+              placeholder="Tarifa Código Barras"
               variant="outlined"
               className="inputText"
               onChange={({ target }) => {
@@ -176,8 +195,21 @@ const Tarifas = () => {
           Enviar Cadastro
         </Button>
       </form>
-      {/* <pre>{data}</pre> */}
-      {/* <DevTool control={control} placement="top-right" /> */}
+      <footer style={{ marginTop: "16px" }}>
+        <Stack direction="row" spacing={2}>
+          <Button
+            variant="outlined"
+            onClick={() => goToPage("limites")}
+            disabled={!isValid || isSubmitting}
+          >
+            Voltar
+          </Button>
+          <Button variant="outlined" onClick={() => clearStorage()}>
+            Limpar
+          </Button>
+        </Stack>
+      </footer>
+      <DevTool control={control} placement="top-right" />
     </div>
   );
 };
