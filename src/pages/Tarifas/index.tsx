@@ -7,13 +7,10 @@ import { Button, Stack, TextField, Typography } from "@mui/material";
 import { TTarifas } from "../../types/formTypes";
 import { useStorage } from "../../hooks/useStorage";
 
-const clearStorage = () => {
-  sessionStorage.removeItem("form_limites");
-};
-
 const Tarifas = () => {
   const navigate = useNavigate();
   const { objStorage, dataStorage } = useStorage();
+  const [data, setData] = React.useState("");
 
   const defaultValues = {
     tarifaPix: dataStorage.tarifaPix || 10,
@@ -37,12 +34,17 @@ const Tarifas = () => {
     navigate(`./../${page}`);
   };
 
+  const clearStorage = () => {
+    sessionStorage.removeItem("form_limites");
+    setData("");
+  };
+
   const onSubmit = (values: TTarifas) => {
     const postDataValues = {
       ...dataStorage,
       ...values,
     };
-
+    setData(JSON.stringify(postDataValues, null, 2));
     sessionStorage.setItem("form_limites", JSON.stringify(postDataValues));
     console.log(postDataValues);
   };
@@ -66,6 +68,7 @@ const Tarifas = () => {
   React.useEffect(() => {
     loadDataStorage();
     trigger(["tarifaPix", "tarifaBoleto", "tarifaCodBarras"]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [trigger]);
 
   return (
@@ -209,6 +212,7 @@ const Tarifas = () => {
           </Button>
         </Stack>
       </footer>
+      <pre>{data}</pre>
       <DevTool control={control} placement="top-right" />
     </div>
   );
