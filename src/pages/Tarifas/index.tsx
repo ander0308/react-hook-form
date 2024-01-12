@@ -54,7 +54,7 @@ const Tarifas = () => {
     const boleto = dataStorage.tarifaBoleto;
     const codBarras = dataStorage.tarifaCodBarras;
 
-    if ((objStorage && pix) || boleto || codBarras) {
+    if (objStorage && (pix || boleto || codBarras)) {
       setValue("tarifaPix", dataStorage.tarifaPix, { shouldValidate: true });
       setValue("tarifaBoleto", dataStorage.tarifaBoleto, {
         shouldValidate: true,
