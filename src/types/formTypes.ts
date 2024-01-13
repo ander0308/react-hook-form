@@ -13,6 +13,15 @@ export type TTarifas = {
   tarifaCodBarras: number;
 };
 
+export type TIntegracao = {
+  cnpjSolicitante: string;
+  razaoSocial: string;
+  emailAssociado: string;
+  emailTecnico: string;
+};
+
+export type TPage = "limites" | "tarifas" | "integracao" | "cadastro-revisao";
+
 export type TValuesStorage = {
   limiteBoletoDiario: number;
   limiteBoletoTransacao: number;
@@ -23,4 +32,8 @@ export type TValuesStorage = {
   tarifaBoleto: number;
   tarifaCodBarras: number;
   tarifaPix: number;
+  cnpjSolicitante: string;
+  razaoSocial: string;
+  emailAssociado: string;
+  emailTecnico: string;
 };

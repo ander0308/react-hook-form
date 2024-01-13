@@ -1,11 +1,13 @@
-import React from "react";
-import { useForm, Controller } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { Button, TextField, Typography } from "@mui/material";
+import React from "react";
+import { Controller, useForm } from "react-hook-form";
 
 import { useNavigate } from "react-router-dom";
-import { TLimites } from "../../types/formTypes";
+import StepsForm from "../../components/Steps";
+import { KEY_STORAGE_FORM_CADASTRO } from "../../constants";
 import { useStorage } from "../../hooks/useStorage";
+import { TLimites } from "../../types/formTypes";
 
 const Limites = () => {
   const navigate = useNavigate();
@@ -42,7 +44,10 @@ const Limites = () => {
       ...dataStorage,
       ...values,
     };
-    sessionStorage.setItem("form_limites", JSON.stringify(valuesStorage));
+    sessionStorage.setItem(
+      KEY_STORAGE_FORM_CADASTRO,
+      JSON.stringify(valuesStorage)
+    );
     goToPage("tarifas");
 
     console.log(valuesStorage);
@@ -53,7 +58,7 @@ const Limites = () => {
   const watchLimiteCodBarrasDiario = watch("limiteCodBarrasDiario");
 
   const loadDataByStorage = () => {
-    if (objStorage) {
+    if (objStorage && dataStorage.limitePixDiario) {
       setValue("limitePixDiario", dataStorage.limitePixDiario, {
         shouldValidate: true,
       });
@@ -96,10 +101,12 @@ const Limites = () => {
     <div>
       <Typography variant="h3">CADASTRO DE LIMITES</Typography>
       <br />
+      <StepsForm activeStep={0} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Typography variant="overline" fontWeight="bold">
           Pix
         </Typography>
+
         <Controller
           control={control}
           name="limitePixDiario"

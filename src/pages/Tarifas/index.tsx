@@ -6,11 +6,14 @@ import { DevTool } from "@hookform/devtools";
 import { Button, Stack, TextField, Typography } from "@mui/material";
 import { TTarifas } from "../../types/formTypes";
 import { useStorage } from "../../hooks/useStorage";
+import { KEY_STORAGE_FORM_CADASTRO } from "../../constants";
+import { clearStorage } from "../../uteis/functions";
+import StepsForm from "../../components/Steps";
 
 const Tarifas = () => {
   const navigate = useNavigate();
   const { objStorage, dataStorage } = useStorage();
-  const [data, setData] = React.useState("");
+  // const [data, setData] = React.useState("");
 
   const defaultValues = {
     tarifaPix: dataStorage.tarifaPix || 10,
@@ -34,18 +37,17 @@ const Tarifas = () => {
     navigate(`./../${page}`);
   };
 
-  const clearStorage = () => {
-    sessionStorage.removeItem("form_limites");
-    setData("");
-  };
-
   const onSubmit = (values: TTarifas) => {
     const postDataValues = {
       ...dataStorage,
       ...values,
     };
-    setData(JSON.stringify(postDataValues, null, 2));
-    sessionStorage.setItem("form_limites", JSON.stringify(postDataValues));
+    // setData(JSON.stringify(postDataValues, null, 2));
+    sessionStorage.setItem(
+      KEY_STORAGE_FORM_CADASTRO,
+      JSON.stringify(postDataValues)
+    );
+    goToPage("integracao");
     console.log(postDataValues);
   };
 
@@ -75,6 +77,7 @@ const Tarifas = () => {
     <div>
       <Typography variant="h3">CADASTRO DE TARIFAS</Typography>
       <br />
+      <StepsForm activeStep={1} />
       <form onSubmit={handleSubmit(onSubmit)}>
         <Typography variant="overline" fontWeight="bold">
           Pix
@@ -189,17 +192,7 @@ const Tarifas = () => {
             />
           )}
         />
-
-        <Button
-          variant="contained"
-          type="submit"
-          disabled={!isValid || isSubmitting}
-        >
-          Enviar Cadastro
-        </Button>
-      </form>
-      <footer style={{ marginTop: "16px" }}>
-        <Stack direction="row" spacing={2}>
+        <Stack direction="row" spacing={2} width="100%">
           <Button
             variant="outlined"
             onClick={() => goToPage("limites")}
@@ -210,9 +203,17 @@ const Tarifas = () => {
           <Button variant="outlined" onClick={() => clearStorage()}>
             Limpar
           </Button>
+          <Button
+            variant="contained"
+            type="submit"
+            disabled={!isValid || isSubmitting}
+          >
+            Proximo
+          </Button>
         </Stack>
-      </footer>
-      <pre>{data}</pre>
+      </form>
+      <footer style={{ marginTop: "16px" }}></footer>
+      {/* <pre>{data}</pre> */}
       <DevTool control={control} placement="top-right" />
     </div>
   );

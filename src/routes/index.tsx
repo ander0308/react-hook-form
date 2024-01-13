@@ -7,6 +7,8 @@ import { UserProvider } from "../context/UserContext";
 import MaterialUiCadastroTarifas from "../pages/MaterialUiCadastroTarifas";
 import Limites from "../pages/Limites";
 import Tarifas from "../pages/Tarifas";
+import Integracao from "../pages/Integracao";
+import RevisaoCadastro from "../pages/RevisaoCadastro";
 
 export type TRoutePaths = {
   path: string;
@@ -44,6 +46,14 @@ const routesPaths = (): TRoutePaths[] => {
     {
       path: "/app2/tarifas",
       element: withProvider(Tarifas),
+    },
+    {
+      path: "/app2/integracao",
+      element: withProvider(Integracao),
+    },
+    {
+      path: "/app2/revisao-cadastro",
+      element: withProvider(RevisaoCadastro),
     },
   ];
 };
