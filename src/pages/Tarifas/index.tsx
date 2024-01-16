@@ -7,7 +7,7 @@ import { Button, Stack, TextField, Typography } from "@mui/material";
 import { TTarifas } from "../../types/formTypes";
 import { useStorage } from "../../hooks/useStorage";
 import { KEY_STORAGE_FORM_CADASTRO } from "../../constants";
-import { clearStorage } from "../../uteis/functions";
+import { clearStorage, convertForNumber } from "../../uteis/functions";
 import StepsForm from "../../components/Steps";
 
 const Tarifas = () => {
@@ -104,7 +104,7 @@ const Tarifas = () => {
               variant="outlined"
               className="inputText"
               onChange={({ target }) => {
-                const numericValue = Number(target.value);
+                const numericValue = Number(convertForNumber(target.value));
                 setValue("tarifaPix", numericValue, {
                   shouldValidate: true,
                 });
@@ -142,7 +142,7 @@ const Tarifas = () => {
               variant="outlined"
               className="inputText"
               onChange={({ target }) => {
-                const numericValue = Number(target.value);
+                const numericValue = Number(convertForNumber(target.value));
                 setValue("tarifaBoleto", numericValue, {
                   shouldValidate: true,
                 });
@@ -180,7 +180,7 @@ const Tarifas = () => {
               variant="outlined"
               className="inputText"
               onChange={({ target }) => {
-                const numericValue = Number(target.value);
+                const numericValue = Number(convertForNumber(target.value));
                 setValue("tarifaCodBarras", numericValue, {
                   shouldValidate: true,
                 });

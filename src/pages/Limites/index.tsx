@@ -8,6 +8,7 @@ import StepsForm from "../../components/Steps";
 import { KEY_STORAGE_FORM_CADASTRO } from "../../constants";
 import { useStorage } from "../../hooks/useStorage";
 import { TLimites } from "../../types/formTypes";
+import { convertForNumber } from "../../uteis/functions";
 
 const Limites = () => {
   const navigate = useNavigate();
@@ -97,6 +98,8 @@ const Limites = () => {
     ]);
   }, [trigger]);
 
+
+
   return (
     <div>
       <Typography variant="h3">CADASTRO DE LIMITES</Typography>
@@ -129,7 +132,7 @@ const Limites = () => {
               variant="outlined"
               className="inputText"
               onChange={({ target }) => {
-                const numericValue = Number(target.value);
+                const numericValue = Number(convertForNumber(target.value));
                 setValue("limitePixDiario", numericValue, {
                   shouldValidate: true,
                 });
@@ -162,7 +165,7 @@ const Limites = () => {
               variant="outlined"
               className="inputText"
               onChange={({ target }) => {
-                const numericValue = Number(target.value);
+                const numericValue = Number(convertForNumber(target.value));
                 setValue("limitePixTransacao", numericValue, {
                   shouldValidate: true,
                 });
@@ -200,7 +203,7 @@ const Limites = () => {
               variant="outlined"
               className="inputText"
               onChange={({ target }) => {
-                const numericValue = Number(target.value);
+                const numericValue = Number(convertForNumber(target.value));
                 setValue("limiteBoletoDiario", numericValue, {
                   shouldValidate: true,
                 });
@@ -233,7 +236,7 @@ const Limites = () => {
               variant="outlined"
               className="inputText"
               onChange={({ target }) => {
-                const numericValue = Number(target.value);
+                const numericValue = Number(convertForNumber(target.value));
                 setValue("limiteBoletoTransacao", numericValue, {
                   shouldValidate: true,
                 });
@@ -271,7 +274,7 @@ const Limites = () => {
               variant="outlined"
               className="inputText"
               onChange={({ target }) => {
-                const numericValue = Number(target.value);
+                const numericValue = Number(convertForNumber(target.value));
                 setValue("limiteCodBarrasDiario", numericValue, {
                   shouldValidate: true,
                 });
@@ -304,7 +307,7 @@ const Limites = () => {
               variant="outlined"
               className="inputText"
               onChange={({ target }) => {
-                const numericValue = Number(target.value);
+                const numericValue = Number(convertForNumber(target.value));
                 setValue("limiteCodBarrasTransacao", numericValue, {
                   shouldValidate: true,
                 });

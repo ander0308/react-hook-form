@@ -16,6 +16,7 @@ import { useStorage } from "../../hooks/useStorage";
 import { TPage, TValuesStorage } from "../../types/formTypes";
 import { clearStorage } from "../../uteis/functions";
 import { styleList, styleListItemTextRight } from "./styles";
+import { toast } from "sonner";
 
 const RevisaoCadastro = () => {
   const navigate = useNavigate();
@@ -82,7 +83,11 @@ const RevisaoCadastro = () => {
           <Button variant="outlined" onClick={() => clearStorage()}>
             Limpar
           </Button>
-          <Button variant="contained" type="button">
+          <Button variant="contained" type="button" onClick={() => toast.success("Cadastro feito com sucesso!", {
+            style: {
+              color: "#12b886"
+            }
+          })}>
             Cadastrar
           </Button>
         </Stack>
