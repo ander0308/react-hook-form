@@ -8,7 +8,7 @@ import StepsForm from "../../components/Steps";
 import { KEY_STORAGE_FORM_CADASTRO } from "../../constants";
 import { useStorage } from "../../hooks/useStorage";
 import { TIntegracao } from "../../types/formTypes";
-import { clearStorage } from "../../uteis/functions";
+import { clearStorage, formatterCnpjToNumber, formatterCnpjToString } from "../../uteis/functions";
 
 const Integracao = () => {
   const navigate = useNavigate();
@@ -70,17 +70,6 @@ const Integracao = () => {
   React.useEffect(() => {
     loadDataByStorage();
   }, []);
-
-  const formatterCnpjToNumber = (value: string) => {
-    return value.replace(/\D/g, "");
-  };
-
-  const formatterCnpjToString = (value: string) => {
-    return value.replace(
-      /^(\d{2})(\d{3})(\d{3})(\d{4})(\d{2})$/,
-      "$1.$2.$3/$4-$5"
-    );
-  };
 
   const regexEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
